@@ -1,18 +1,11 @@
 "use client";
 
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { FormField, FormItem, FormLabel } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
+import React from "react";
 import { Control } from "react-hook-form";
 import { FormFieldType } from "./forms/PatientForm";
-import React from "react";
 
 interface CustomProps {
   control: Control<any>;
@@ -29,7 +22,12 @@ interface CustomProps {
   renderSkeleton?: (field: any) => React.ReactNode;
 }
 
-const CustomFormField = ({ control, fieldType, name, label }: CustomProps) => {
+const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
+  return <Input type="text" placeholder="Enter your text" />;
+};
+
+const CustomFormField = (props: CustomProps) => {
+  const { control, fieldType, name, label } = props;
   return (
     <FormField
       control={control}
@@ -39,6 +37,8 @@ const CustomFormField = ({ control, fieldType, name, label }: CustomProps) => {
           {fieldType !== FormFieldType.CHECKBOX && label && (
             <FormLabel>{label}</FormLabel>
           )}
+
+          <RenderField field={field} props={props} />
         </FormItem>
       )}
     />
