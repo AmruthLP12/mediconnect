@@ -14,7 +14,7 @@ export const createUser = async (user: CreateUserParams) => {
       undefined,
       user.name
     );
-    console.log("New user created:", newUser);
+    // console.log("New user created:", newUser);
 
     return parseStringify(newUser);
   } catch (error: any) {
