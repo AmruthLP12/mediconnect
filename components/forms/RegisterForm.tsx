@@ -4,26 +4,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form } from "@/components/ui/form";
+import { Form, FormControl } from "@/components/ui/form";
 import { createUser } from "@/lib/actions/patient.actions";
 import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
+import { FormFieldType } from "./PatientForm";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { GenderOptions } from "@/constants";
+import { Label } from "../ui/label";
 
-export enum FormFieldType {
-  INPUT = "input",
-  TEXTAREA = "textarea",
-  CHECKBOX = "checkbox",
-  DATE_PICKER = "datePicker",
-  SELECT = "select",
-  SKELETON = "skeleton",
-  PHONE_INPUT = "phoneInput",
-}
-
-const RegisterForm = () => {
-const router = useRouter()
+const RegisterForm = ({ user }: { user: User }) => {
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,17 +46,25 @@ const router = useRouter()
 
       const user = await createUser(userData);
 
-      if(user) router.push(`/patients/${user.$id}/register`)
+      if (user) router.push(`/patients/${user.$id}/register`);
     } catch (error) {
       console.log(error);
     }
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 flex-1">
-        <section className="mb-12 space-y-4">
-          <h1 className="header">Hi there 👋</h1>
-          <p className="text-dark-700">Schedule your first appointment</p>
+      <form 
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-12 flex-1"
+      >
+        <section className="space-y-4">
+          <h1 className="header">Welcome 👋</h1>
+          <p className="text-dark-700">Let us know more about yourself</p>
+        </section>
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1">
+            <h2 className="sub-header">Personal Information.</h2>
+          </div>
         </section>
 
         <CustomFormField
@@ -75,23 +77,59 @@ const router = useRouter()
           iconAlt="user"
         />
 
-        <CustomFormField
-          fieldType={FormFieldType.INPUT}
-          control={form.control}
-          name="email"
-          label="Email"
-          placeholder="johndoe@mail.com"
-          iconSrc="/assets/icons/email.svg"
-          iconAlt="email"
-        />
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="email"
+            label="Email"
+            placeholder="johndoe@mail.com"
+            iconSrc="/assets/icons/email.svg"
+            iconAlt="email"
+          />
 
-        <CustomFormField
-          fieldType={FormFieldType.PHONE_INPUT}
-          control={form.control}
-          name="phone"
-          label="Phone number"
-          placeholder="+91 9876543210"
-        />
+          <CustomFormField
+            fieldType={FormFieldType.PHONE_INPUT}
+            control={form.control}
+            name="phone"
+            label="Phone number"
+            placeholder="+91 9876543210"
+          />
+        </div>
+
+        <div className="flex flex-col gap-4 xl:flex-row">
+          <CustomFormField
+            fieldType={FormFieldType.DATE_PICKER}
+            control={form.control}
+            name="birthDate"
+            label="Date of Birth"
+          />
+
+          <CustomFormField
+            fieldType={FormFieldType.SKELETON}
+            control={form.control}
+            name="gender"
+            label="Gender"
+            renderSkeleton={(field) => (
+              <FormControl>
+                <RadioGroup
+                  className="flex h-11 gap-3 justify-between"
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  {GenderOptions.map((option) => (
+                    <div className="radio-group" key={option}>
+                      <RadioGroupItem value={option} id={option} />
+                      <Label htmlFor={option} className="cursor-pointer">
+                        {option}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            )}
+          />
+        </div>
 
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>
