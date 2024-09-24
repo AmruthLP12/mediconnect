@@ -13,7 +13,7 @@ const Register = async ({params : {userId}} : SearchParamProps) => {
     <div className="flex h-screen max-h-screen">
 
       <section className="remove-scrollbar mx-auto container my-auto">
-        <div className="sub-container p-6 max-w-[496px] ">
+        <div className="sub-container max-w-[496px] ">
           <Image
             src="/assets/icons/logo-full.svg"
             height={1000}
