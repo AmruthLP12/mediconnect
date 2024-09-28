@@ -24,7 +24,7 @@ export default async function NewAppointment({params : {userId}} : SearchParamPr
           patientId={patient.$id}
           />
 
-          <p className="justify-items-end text-dark-600 xl:text-left">
+          <p className="copyright mt-10 py-12">
             &copy; 2024 MediConnect
           </p>
           

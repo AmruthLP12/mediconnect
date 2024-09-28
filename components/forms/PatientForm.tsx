@@ -23,7 +23,7 @@ export enum FormFieldType {
 }
 
 const PatientForm = () => {
-const router = useRouter()
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,10 +52,11 @@ const router = useRouter()
 
       const user = await createUser(userData);
 
-      if(user) router.push(`/patients/${user.$id}/register`)
+      if (user) router.push(`/patients/${user.$id}/register`);
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   }
   return (
     <Form {...form}>
