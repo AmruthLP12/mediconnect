@@ -21,11 +21,12 @@ import {
 } from "@/components/ui/input-otp";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { encryptKey } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { decryptKey, encryptKey } from "@/lib/utils";
 
 const PassKeyModel = () => {
   const router = useRouter();
+  const path = usePathname();
   const [open, setOpen] = useState(true);
   const [passkey, setPasskey] = useState("");
   const [error, setError] = useState("");
@@ -35,9 +36,18 @@ const PassKeyModel = () => {
       ? window.localStorage.getItem("accessKey")
       : null;
 
-      useEffect (() => {
+  useEffect(() => {
+    const accessKey = encryptedKey && decryptKey(encryptedKey);
 
-      } , [encryptKey])
+    if (path) {
+      if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+        setOpen(false);
+        router.push("/admin");
+      } else {
+        setOpen(true);
+      }
+    }
+  }, [encryptedKey]);
 
   const closeModel = () => {
     setOpen(false);
@@ -51,6 +61,8 @@ const PassKeyModel = () => {
     if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
       const encryptedKey = encryptKey(passkey);
       localStorage.setItem("accessKey", encryptedKey);
+      setOpen(false);
+      router.push("/admin");
     } else {
       setError("Invalid passkey, Please try again.");
     }
