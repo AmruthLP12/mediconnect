@@ -13,9 +13,9 @@ export default function Home({ searchParams }: SearchParamProps) {
       <section className="remove-scrollbar mx-auto container my-auto">
         <div className="sub-container p-6 max-w-[496px] ">
           <Image
-            src="/assets/icons/logo-b.svg"
-            height={1000}
-            width={1000}
+            src="/assets/icons/logo-full.svg"
+            height={100}
+            width={100}
             alt="patient"
             className="mb-12 h-10 w-fit"
           />
